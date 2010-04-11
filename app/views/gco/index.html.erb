@@ -1,0 +1,44 @@
+<h2>Gerência de Configuração - GCO</h2>
+
+<% #invoca o helper que monta a tab %>
+<% tabs = gco_tabs %>
+
+
+<% unless tabs.nil? || tabs.empty? %>
+  <% selected_tab = params[:tab] %>
+  
+  <div class="tabs">
+  <ul>
+    <% #itera a lista de tabs e monta os links %>
+    <% tabs.each do |tab| -%>
+        <li>
+          <%=  link_to tab[:label],
+                {:controller => 'gco', 
+                 :action => 'index',
+                 :project_id => params[:project_id],
+                 :tab => tab[:name]},
+               :class => (tab[:name] != selected_tab ? nil : 'selected'),
+               :onclick=>"Element.show('ajax-indicator');" %>
+      </li>
+    <% end -%>
+  </ul>
+  </div>
+
+  <% if selected_tab == nil %>
+    <%= "Selecione um dos módulos acima." %>
+  <% else %>
+    <% #itera a lista de tabs até encontrar a selecionada e renderiza seu conteúdo %>
+    <% tabs.each do |tab| %>
+      <% if tab[:name] == selected_tab %>
+        <%= content_tag('div', render(:partial => tab[:partial]),
+                               :id => "tab-content-#{tab[:name]}",
+                               :class => 'tab-content') %>
+        <% #encontrou a tab selecionada, sai fora %>
+        <% break %>
+      <% end %>
+    <% end %>
+  <% end %>
+  
+<% else %>
+  <p class="nodata"><%= 'Ooops... algo está errado, não foram encontradas as tabs para montar....' %></p>
+<% end %>

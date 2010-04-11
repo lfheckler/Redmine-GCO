@@ -1,0 +1,78 @@
+  <% content_for :header_tags do %>
+  <%= javascript_include_tag "/plugin_assets/redmine_gco/javascripts/gco.js"  %>
+<% end %>
+
+<% if @error_msg %>
+  <strong> <%= @error_msg %> </strong>
+<% else %>
+  <h2> <%= l(:created_baselines) %></h2>
+  <p><%= @project.repository.url %>/<%= @baselines_path %></p>
+  <% if !@entries.nil? && authorize_for('repositories', 'browse') %>
+    <%= render :partial => 'baseline/dir_list' %>
+  <% else %>
+
+    <div>
+      <%= l(:msg_no_baselines) %>
+    </div>
+    <br />
+  <% end %>
+
+  <% if User.current.allowed_to?(:criar_baseline, @project) %>
+
+    <div id="divBtBaselineForm" style="margin-top:20px">
+      <input type="button" name="btBaseline" value="<%= l(:bt_new_baseline) %>" onclick="javascript: divBaselineShow()" />
+    </div>
+    <div id="divBaselineForm" style="display:none; margin-top:20px">
+
+      <h3><%= l(:new_baseline) %>:</h3>
+
+      <% form_tag "gco/index", :class => "tabular" do %>
+        <%= hidden_field_tag("project_id",@project.id) %>
+        <%= hidden_field_tag("tab","baseline") %>
+
+        <fieldset class="box"><legend><%=  l(:fieldSet_scm) %></legend>
+              <p>
+                <label>
+                  <%= l(:fieldUser) %><span class="required"> *</span>
+                </label>
+                <%= text_field_tag 'user', '' %>
+              </p>
+              <p>
+                <label>
+                  <%= l(:fieldPasswd) %><span class="required"> *</span>
+                </label>
+                <%= password_field_tag 'password', '' %>
+              </p>
+        </fieldset>
+
+        <fieldset class="box"><legend><%=  l(:fieldSet_baseline) %></legend>
+            <p>
+              <label>
+                <%= l(:fieldBaselineId) %><span class="required"> *</span>
+              </label>
+              <%= select_tag 'baseline_id', baseline_options_for_select(@baseline_options), :onchange=>"showBaselineItems()" %>
+            </p>
+            <p>
+              <label>
+                <%= l(:trunk_custom_field) %>
+              </label>
+              <%= @project.repository.url %>/<%= @trunk_path %>
+            </p>
+        </fieldset>
+
+        <div id="baselineItems">
+        </div>
+
+        <script type="text/javascript">showBaselineItems()</script>
+
+        <%= submit_tag l(:bt_new_baseline), :name => 'btBaseline', :id => 'btBaseline', :onclick=>"onSubmitButton('btBaseline')" %>
+
+      <% end -%>
+    </div>
+  <% else %>
+    <p>
+      <em>** Suas permissões de acesso não permitem criar novas baselines.</em>
+    </p>
+  <% end %>
+
+<% end %>

@@ -1,0 +1,84 @@
+/* 
+    Document   : gco
+    Created on : 27/09/2009, 21:14:45
+    Author     : lfheckler
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* tabela de baselines planejadas */
+table.baseline_plan {
+    border: 1px solid #e4e4e4;
+    border-collapse: collapse;
+    width: 50%;
+    margin-bottom: 4px;
+}
+
+table.baseline_plan th {
+    background-color:#EEEEEE;
+    padding: 4px;
+    white-space:nowrap;
+}
+
+table.baseline_plan td.order {
+    width: 10%;
+    text-align: right;
+}
+
+table.baseline_plan td.identifier {
+    text-align: center;
+}
+
+table.baseline_plan td.date {
+    text-align: center;
+}
+
+table.baseline_plan td.status {
+    text-align: center;
+    font-style: italic;
+}
+
+table.baseline_plan td.operations {
+    width: 30%;
+    text-align: center;
+}
+
+span.expand {
+    background-image: url(/images/bullet_toggle_plus.png);
+    padding-left: 8px;
+    margin-left: 0;
+    cursor: pointer;
+}
+
+span.collapse {
+    background-image: url(/images/bullet_toggle_minus.png);
+    padding-left: 8px;
+    margin-left: 0;
+    cursor: pointer;
+}
+
+div.opened {
+    display: block;
+}
+
+div.closed {
+    display: none;
+}
+
+div.selectIssue {
+    position: absolute;
+    background-color:#dddddd;
+    border: 1px solid green;
+    top:32%;
+    left:30%;
+    width:40%;
+    text-align:center;
+    padding:0.6em;
+    z-index:100;
+}
+
+html>body div.selectIssue {
+    position: fixed;
+}
+
+dt.gco-log { background-image: url(/images/arrow_from.png); }

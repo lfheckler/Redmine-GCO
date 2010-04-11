@@ -1,0 +1,22 @@
+en:
+  baseline_custom_field: Baseline path
+  trunk_custom_field: Trunk path
+  created_baselines: Created baselines
+  baseline_path: /&lt;project repository&gt;/
+  bt_new_baseline: Create new baseline
+  msg_no_baselines: No baselines created.
+  msg_no_project_repository: Setup project repository first.
+  msg_baseline_path: Baseline path not found. Check the custom field '{{value}}' into project config.
+  msg_trunk_path: Trunk path not found. Check the custom field '{{value}}' into project config.
+  new_baseline: Create new baseline
+  js_formBaseline_userNotFound: Field 'Username' its required.
+  js_formBaseline_passwdNotFound: Field 'Password' its required.
+  js_formBaseline_baselineIdNotFound: Field 'Identifier' its required.
+  notice_baseline_created: Baseline sucessfully created.
+  new_baseline: New baseline
+  fieldSet_scm: Repository access
+  fieldSet_baseline: Baseline data
+  fieldUser: Username
+  fieldPasswd: Password
+  fieldBaselineId: Identifier
+  label_gco_log_plural: GCO

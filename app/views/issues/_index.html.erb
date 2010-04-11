@@ -1,0 +1,26 @@
+<% content_for :header_tags do %>
+  <%= javascript_include_tag "/plugin_assets/redmine_gco/javascripts/gco.js"  %>
+  <%= stylesheet_link_tag "/plugin_assets/redmine_gco/stylesheets/gco.css"  %>
+<% end %>
+
+<h2><%= "Tickets x Revisões" %></h2>
+
+<%= hidden_field_tag("project_id",@project.id) %>
+<%= hidden_field_tag("tab","baseline") %>
+
+
+<fieldset class="box">
+  <p>
+    Selecione o ticket e marque as revisões que deseja associar.
+  </p>
+  <p>
+    <label>
+      <%= "Ticket" %>
+    </label>
+    <%= select_tag 'issue_id', issues_options_for_select(@issues), :onchange=>"showIssueRevisions()" %>
+  </p>
+
+</fieldset>
+
+<div id="revisions">
+  </div>

@@ -1,0 +1,117 @@
+<% content_for :header_tags do %>
+  <%= javascript_include_tag "/plugin_assets/redmine_gco/javascripts/gco.js"  %>
+  <%= stylesheet_link_tag "/plugin_assets/redmine_gco/stylesheets/gco.css"  %>
+<% end %>
+
+<% if @error_msg %>
+  <strong><%= @error_msg %></strong>
+<% else %>
+  <h2><%= "Planejamento de baselines" %></h2>
+
+    <% if !@entries.nil? %>
+      <table class="baseline_plan">
+        <thead>
+          <tr>
+            <th><%= "Ordem" %></th>
+            <th><%= "Identificador" %></th>
+            <th><%= "Data" %></th>
+            <th><%= "Status" %></th>
+            <% if User.current.allowed_to?(:gerenciar_configuracao, @project) %>
+              <th><%= "Operações" %></th>
+            <% end %>
+            </tr>
+        </thead>
+        <tbody>
+          <% @entries.each do |entry| %>
+            <tr class="<%= cycle('even', 'odd') %>">
+              <td class="order">
+                <%= entry.position.to_s %>
+              </td>
+              <td class="identifier">
+                <%= entry.identifier %>
+              </td>
+              <td class="date">
+                <% if  entry.creation_date.nil? && !entry.cancellation_date.nil? %>
+                  <%= format_date(entry.cancellation_date) %>
+                <% else %>
+                  <%= format_date(entry.creation_date) %>
+                <% end %>
+                
+              </td>
+              <td class="status">
+                <% if  entry.creation_date.nil? && !entry.cancellation_date.nil? %>
+                  <%= "cancelada" %>
+                <% elsif !entry.creation_date.nil? && entry.cancellation_date.nil? %>
+                  <%= "criada" %>
+                <% else %>
+                  <%= "pendente" %>
+                <% end %>
+              </td>
+              <% if User.current.allowed_to?(:gerenciar_configuracao, @project) %>
+                <td class="operations">
+                  <%  if entry.creation_date.nil? && entry.cancellation_date.nil?  %>
+                    <%= link_to image_tag('2uparrow.png', :alt => l(:label_sort_highest)),
+                        {:controller=>'gco',
+                         :action => 'move_baseline_plan',
+                         :baseline_id => entry.id,
+                         :project_id => @project.id,
+                         :position => 'highest'} %>
+                    <%= link_to image_tag('1uparrow.png', :alt => l(:label_sort_higher)),
+                        {:controller=>'gco',
+                         :action => 'move_baseline_plan',
+                         :baseline_id => entry.id,
+                         :project_id => @project.id,
+                         :position => 'lower'} %>
+                    <%= link_to image_tag('1downarrow.png', :alt => l(:label_sort_lower)),
+                        {:controller=>'gco',
+                         :action => 'move_baseline_plan',
+                         :baseline_id => entry.id,
+                         :project_id => @project.id,
+                         :position => 'higher'} %>
+                    <%= link_to image_tag('2downarrow.png', :alt => l(:label_sort_lowest)),
+                        {:controller=>'gco',
+                         :action => 'move_baseline_plan',
+                         :baseline_id => entry.id,
+                         :project_id => @project.id,
+                         :position => 'lowest'} %>
+                    <%= link_to l(:button_delete),
+                        {:controller => 'gco',
+                         :action => 'delete_baseline_plan',
+                         :baseline_id => entry.id,
+                         :project_id => @project.id},
+                         :confirm => l(:text_are_you_sure),
+                         :method => :post,
+                         :class => 'icon icon-del' %>
+                   <% end %>
+                </td>
+              <% end %>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <i><%= "Ainda não existem baselines planejadas para este projeto." %></i>
+    <% end %>
+
+  <br />
+  <% if User.current.allowed_to?(:gerenciar_configuracao, @project) %>
+    <br />
+    <% form_tag "gco/new_baseline_plan", :class => "tabular" do %>
+      <%= hidden_field_tag("project_id",@project.id) %>
+      <%= hidden_field_tag("tab","config_plan") %>
+
+      <fieldset class="box"><legend><%=  "Incluir nova baseline no plano:" %></legend>
+            <p>
+              <label>
+                <%= "Identificador" %><span class="required"> *</span>
+              </label>
+              <%= text_field_tag 'baseline_ident', '' %>
+            </p>
+      </fieldset>
+
+      <%= submit_tag "Inserir nova baseline no plano", :name => 'btBaselinePlan', :id => 'btBaselinePlan', :onclick=>"onSubmitButton('btBaselinePlan')" %>
+    <% end %>
+  <% else %>
+    <p><i>** Suas permissões de acesso não permitem gerenciar o plano de configuração.</i></p>
+  <% end %>
+<% end %>

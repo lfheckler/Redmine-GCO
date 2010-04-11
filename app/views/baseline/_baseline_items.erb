@@ -1,0 +1,15 @@
+<fieldset class="box">
+  <legend><%=  "Itens da baseline" %></legend>
+  <% if @entries.nil? || @entries.empty? %>
+    <i>Não foram encontrados itens para compor esta baseline.</i>
+  <% else %>
+    <ul>
+      <% @entries.each do |e| %>
+        <li>
+        <%= check_box_tag 'baseline_items', e.path+"|"+e.revision, 'checked', :name =>'baseline_items[]' %>
+          <%= e.path %>  (rev. <%= link_to(e.revision, :controller => 'repositories', :action => 'revision', :id => @project.identifier, :rev => e.revision) %>)
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</fieldset>

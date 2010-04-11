@@ -1,0 +1,92 @@
+<% content_for :header_tags do %>
+  <%= javascript_include_tag "/plugin_assets/redmine_gco/javascripts/gco.js"  %>
+  <%= stylesheet_link_tag "/plugin_assets/redmine_gco/stylesheets/gco.css"  %>
+<% end %>
+
+<h2>Relatório de possíveis não-conformidades</h2>
+
+<p><span class="collapse" id="span1" onclick="alternaDiv('span1','div1');" >&nbsp;</span> <strong><%= "Baselines existentes no repositório mas não planejadas:" %></strong></p>
+<div id="div1" class="opened">
+  <ul>
+  <% @missed_baselines.each do |entry| %>
+    <li>
+      <%= entry.name %>
+    </li>
+  <% end %>
+  </ul>
+  <% if @missed_baselines.empty? %>
+    <i>Não foram encontrados registros.</i>
+  <% end %>
+
+</div>
+
+<p><span class="collapse" id="span2" onclick="alternaDiv('span2','div2');" >&nbsp;</span> <strong><%= "Baselines existentes no repositório mas pendentes no planejamento:" %></strong></p>
+<div id="div2" class="opened">
+  <ul>
+  <% @missed_future_baselines.each do |entry| %>
+    <li>
+      <%= entry.name %>
+    </li>
+  <% end %>
+  </ul>
+  <% if @missed_future_baselines.empty? %>
+    <i>Não foram encontrados registros.</i>
+  <% end %>
+</div>
+
+<p><span class="collapse" id="span3" onclick="alternaDiv('span3','div3');" >&nbsp;</span> <strong><%= "Revisões no ramo principal não associadas a nenhum ticket:" %></strong></p>
+<div id="div3" class="opened">
+  <% unless @changesets.nil?||@changesets.empty?|| !User.current.allowed_to?(:editar_configuracao, @project) %>
+    <p><i>(clique na revisão para abrir formulário de associação)</i></p>
+  <% end %>
+  <ul>
+  <% @changesets.each do |changeset| %>
+    <li>
+      <% if User.current.allowed_to?(:editar_configuracao, @project) %>
+        <a href="#" onclick="showIssuesDiv(<%=  changeset.id %>,<%=  changeset.revision %>)">
+      <% end %>
+      rev.&nbsp;<%= changeset.revision %>
+      <% if User.current.allowed_to?(:editar_configuracao, @project) %>
+      </a>
+      <% end %> -
+      <%= changeset.committer %> - 
+      "<i><%= changeset.comments %></i>"<br />
+      Arquivos:<br />
+      <ul>
+        <% changeset.changes.each do |change| %>
+          <li>
+            <%= change.path %>
+          </li>
+        <% end %>
+      </ul>
+    </li>
+  <% end %>
+  </ul>
+  <% if @changesets.empty? %>
+    <i>Não foram encontrados registros.</i>
+  <% end %>
+</div>
+
+<% if User.current.allowed_to?(:editar_configuracao, @project) %>
+  <div class="selectIssue" id="divSelectIssue" style="display:none;">
+    <p>Selecione o ticket para relacionar a revisão <span id="labelRevision"></span>.</p>
+    <% form_tag "gco/associate_issue" do %>
+      <%= hidden_field_tag("changeset_id") %>
+      <%= hidden_field_tag("project_id",@project.id) %>
+      <%= hidden_field_tag("tab","report") %>
+
+      <p>
+        <strong>
+          <%= 'Ticket nº:' %><span class="required"> *</span>
+        </strong>
+        <%= select_tag 'issue_id', issues_options_for_select(@issues) %>
+      </p>
+
+      <%= submit_tag 'Associar', :name => 'btAssociate', :id => 'btAssociate', :onclick=>"onSubmitButton('btAssociate')" %>
+      <input type="button" onclick="hideIssuesDiv()" value="Cancelar" name="btCancel"/>
+
+    <% end %>
+
+
+  </div>
+<% end %>

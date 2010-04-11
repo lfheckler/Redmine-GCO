@@ -1,0 +1,22 @@
+pt-BR:
+  baseline_custom_field: Caminho para baselines
+  trunk_custom_field: Ramo principal
+  created_baselines: Baselines existentes
+  baseline_path: /&lt;repositório do projeto&gt;/
+  bt_new_baseline: Criar nova baseline
+  msg_no_baselines: Ainda não existem baselines criadas.
+  msg_no_project_repository: Não foi encontrado o repositório do projeto.
+  msg_baseline_path: Não foi encontrado o caminho para as baselines. Verifique o campo '{{value}}' nas configurações do projeto.
+  msg_trunk_path: Não foi encontrado o caminho do ramo principal do projeto. Verifique o campo '{{value}}' nas configurações do projeto.
+  new_baseline: Criar nova baseline
+  js_formBaseline_userNotFound: O campo 'Usuário' é de preenchimento obrigatório.
+  js_formBaseline_passwdNotFound: O campo 'Senha' é de preenchimento obrigatório.
+  js_formBaseline_baselineIdNotFound: O campo 'Identificador' é de preenchimento obrigatório.
+  notice_baseline_created: Baseline criada com sucesso.
+  new_baseline: Nova baseline
+  fieldSet_scm: Acesso ao repositório
+  fieldSet_baseline: Dados da baseline
+  fieldUser: Usuário
+  fieldPasswd: Senha
+  fieldBaselineId: Identificador
+  label_gco_log_plural: GCO

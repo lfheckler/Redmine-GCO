@@ -1,0 +1,38 @@
+== Redmine GCO installation
+
+Redmine GCO - a Redmine plugin for configuration management
+Copyright (C) 2010  Luis Fernando Heckler
+
+
+== Requirements
+
+* Redmine 0.9 (and their respective requirements)
+
+* SVN binaries >= 1.6 ( must be available in PATH)
+
+* systemu gem (http://rubygems.org/gems/systemu > gem install systemu)
+
+== Installation
+
+1. Copy the redmine_gco folder to Redmine vendor/plugins folder.
+   
+2. Migrate the database:
+     Go to Redmine folder and run (use your specific enviroment):
+     rake db:migrate_plugins RAILS_ENV="production" --trace
+
+3. Run Redmine.
+
+4. Create four project custom fields with this specific names:
+      Baseline path
+      Trunk path   
+      Caminho para baselines
+      Ramo principal
+ 
+   The first field, "Baseline path" represents the path into the svn repository where the baselines will be stored.
+   The second field, "Trunk path" represents the path into the svn repository to the trunk.
+   The other two are the same, to Brazilian Portuguese users.
+
+5. Setting up roles and permissions to use the new module GCO.
+   
+6. Setting up the custom field values to all projects that will use the new module GCO.
+    

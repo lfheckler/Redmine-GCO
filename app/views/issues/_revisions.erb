@@ -1,0 +1,17 @@
+<fieldset class="box">
+  <legend><%=  "Revisões" %></legend>
+  <% if @entries.nil? || @entries.empty? %>
+    <i>Não foram encontradas revisões no projeto.</i>
+  <% else %>
+    <ul>
+      <% @entries.each do |e| %>
+        <li>
+          <% checked = 'checked' unless e.issues.index(@issue).nil? %>
+
+          <input type="checkbox" name="changeset_id[]" id="changeset_id<%= e.id %>" value="<%= e.id %>" <%= checked %> onclick="issueChangesetRelation('<%= "changeset_id"+e.id.to_s %>',<%= @project.id %>)" />
+          <%= e.revision %> - <%= e.committer %> - "<i><%= e.comments %></i>"
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+</fieldset>
